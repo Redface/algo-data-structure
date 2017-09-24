@@ -24,16 +24,11 @@ function heapify(arr, n, i) {
 function heapSort(arr, n) {
   let targetArr = JSON.parse(JSON.stringify(arr));
   for(let i = 0; i < n; i++) targetArr = heapify(targetArr, n, i);
-  console.log('first loop', targetArr);
 
   for(let i = n - 1; i >= 0; i--) {
     const FIRST = 0, LAST = i;
-    console.log('------------');
-    console.log('first', targetArr[FIRST], 'last', targetArr[LAST]);
     targetArr = swap(targetArr, FIRST, LAST);
-    console.log('after swap', targetArr);
     targetArr = heapify(targetArr, i, 0);
-    console.log('after heapify', targetArr);
   }
   return targetArr;
 }
