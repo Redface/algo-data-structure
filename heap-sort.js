@@ -1,38 +1,42 @@
-function swap(arr, firstIndex, secondIndex) {
-  let targetArr = JSON.parse(JSON.stringify(arr));
-  let tmp = targetArr[firstIndex];
-  targetArr[firstIndex] = targetArr[secondIndex];
-  targetArr[secondIndex] = tmp;
-  return targetArr;
+function swap(firstIndex, secondIndex) {
+  let tmp = arr[firstIndex];
+  arr[firstIndex] = arr[secondIndex];
+  arr[secondIndex] = tmp;
 }
-function heapify(arr, n, i) {
-  let largest = i; // init as root
-  const leftChild = 2 * i + 1, rightChild = 2 * i + 2;
-  let targetArr = JSON.parse(JSON.stringify(arr));
+function getLeftChildIndex(parentIndex) { return parentIndex * 2 + 1;}
+function getRightChildIndex(parentIndex) { return parentIndex * 2 + 2;}
+function getParentIndex(childIndex) { return Number.parseInt((childIndex - 1) / 2);}
+function getParent(index) { return arr[getParentIndex(index)];}
+function getLeftChild(index) { return arr[getLeftChildIndex(index)];}
+function getRightChild(index) { return arr[getRightChildIndex(index)];}
+function hasParent(index) { return getParentIndex(index) >= 0;}
+function hasLeftChild(index) { return getLeftChildIndex(index) < arr.length;}
+function hasRightChild(index) { return getRightChildIndex(index) < arr.length;}
 
-  if (leftChild < n && arr[leftChild] > arr[largest]) largest = leftChild;
-  if (rightChild < n && arr[rightChild] > arr[largest]) largest = rightChild;
-
-  if (largest !== i) {
-    targetArr = swap(targetArr, i, largest); 
-    targetArr = heapify(targetArr, n, largest);
+function heapifyUp() {
+  let index = arr.length - 1;
+  while (hasParent(index) && getParent(index) > arr[index]) {
+    swap(getParentIndex(index), index);
+    index = getParentIndex(index);
   }
-
-  return targetArr;
-  
 }
-function heapSort(arr, n) {
-  let targetArr = JSON.parse(JSON.stringify(arr));
-  for(let i = 0; i < n; i++) targetArr = heapify(targetArr, n, i);
-
-  for(let i = n - 1; i >= 0; i--) {
-    const FIRST = 0, LAST = i;
-    targetArr = swap(targetArr, FIRST, LAST);
-    targetArr = heapify(targetArr, i, 0);
+function heapifyDown() {
+  let index = 0;
+  while (hasLeftChild(index)) {
+    let smallerChildIndex = getLeftChildIndex(index); 
+    if (hasRightChild(index) && getRightChild(index) < getLeftChild(index)) {
+      smallerChildIndex = getRightChildIndex(index);
+    }
+    if (arr[index] < arr[smallerChildIndex]) { break; } 
+    else { swap(index, smallerChildIndex); }
+    index = smallerChildIndex;
   }
-  return targetArr;
+}
+function heapSort() {
+  heapifyUp();
+  //heapifyDown();
+  console.log(arr);
 }
 
 let arr = [4,10,3,5,1];
-const n = 5;
-console.log('result', heapSort(arr, n));
+heapSort();
