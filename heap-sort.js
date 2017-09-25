@@ -12,6 +12,8 @@ function getRightChild(index) { return arr[getRightChildIndex(index)];}
 function hasParent(index) { return getParentIndex(index) >= 0;}
 function hasLeftChild(index) { return getLeftChildIndex(index) < arr.length;}
 function hasRightChild(index) { return getRightChildIndex(index) < arr.length;}
+function getPeek() { return arr[0];}
+function getLast() { return arr[arr.length - 1];}
 
 function heapifyUp() {
   let index = arr.length - 1;
@@ -32,11 +34,31 @@ function heapifyDown() {
     index = smallerChildIndex;
   }
 }
-function heapSort() {
+function insert(val) {
+  arr.push(val);
   heapifyUp();
-  //heapifyDown();
   console.log(arr);
 }
+function remove() {
+  const removedVal = getPeek();
+  arr[0] = getLast();
+  arr.pop();
+  return removedVal;
+}
+function heapSort() {
+  let sortedArr = [];
+  for(let i = 0, length = arr.length; i< length;i++) {
+    sortedArr.push(remove()); 
+    heapifyDown();
+  }
+  console.log(sortedArr);
+}
 
-let arr = [4,10,3,5,1];
+let arr = [];
+//let arr = [4,10,3,5,1];
+//let arr = [7,10,3,5,9];
+insert(10);
+insert(4);
+insert(11);
+insert(1);
 heapSort();
